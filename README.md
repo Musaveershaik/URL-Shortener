@@ -2,7 +2,8 @@
 
 A modern, feature-rich URL shortener built with Node.js, Express, and MongoDB. Create short, memorable links with real-time visit tracking and analytics.
 
-![URL Shortener Demo](![alt text](image.png))
+![URL Shortener Demo](![image](https://github.com/user-attachments/assets/fd0f64cc-ac4b-4943-a7db-e62a9b0cc521)
+)
 
 ## ✨ Features
 
