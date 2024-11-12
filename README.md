@@ -174,6 +174,40 @@ Shaik Musaveer - [GitHub Profile](https://github.com/Musaveershaik)
 
 Project Link: [https://github.com/Musaveershaik/URL-Shortener](https://github.com/Musaveershaik/URL-Shortener)
 
+## 📁 Project Structure
+
+Here's an overview of the project's folder and file structure:
+
+```
+url-shortener/
+├── node_modules/
+├── views/
+│   └── home.ejs           # Frontend UI template
+├── routes/
+│   └── index.js           # Route handlers
+├── models/
+│   └── Url.js             # URL database model
+├── public/                # Static assets (if any)
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── .env                   # Environment variables
+├── .gitignore             # Git ignore file
+├── index.js               # Main application file
+├── package.json           # Project dependencies and scripts
+├── package-lock.json      # Locked versions of dependencies
+└── README.md              # Project documentation
+```
+
+### Key Files and Their Purposes:
+
+- `index.js`: The main entry point of the application. It sets up the Express server, connects to MongoDB, and configures middleware.
+- `views/home.ejs`: The main (and only) view template for the application. It contains the HTML structure and embedded JavaScript for the frontend.
+- `routes/index.js`: Contains all the route handlers for the application, including URL shortening, redirection, and statistics retrieval.
+- `models/Url.js`: Defines the Mongoose schema for the URL model, specifying the structure of URL documents in the database.
+- `.env`: Stores environment variables such as the MongoDB connection string and port number.
+- `package.json`: Lists the project dependencies and defines npm scripts for running the application.
+
 ---
 
 ⭐️ If you found this project helpful, please give it a star!
