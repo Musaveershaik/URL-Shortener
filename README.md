@@ -2,7 +2,9 @@
 
 A modern, feature-rich URL shortener built with Node.js, Express, and MongoDB. Create short, memorable links with real-time visit tracking and analytics.
 
-![URL Shortener Demo](![alt text](image.png))
+## URL Shortener Demo
+![image](https://github.com/user-attachments/assets/0ef1ae57-961b-4278-b1a4-68087d89c3fd)
+
 
 ## ✨ Features
 
@@ -168,7 +170,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-Musaveer Shaik - [GitHub Profile](https://github.com/Musaveershaik)
+Shaik Musaveer - [GitHub Profile](https://github.com/Musaveershaik)
 
 Project Link: [https://github.com/Musaveershaik/URL-Shortener](https://github.com/Musaveershaik/URL-Shortener)
 
