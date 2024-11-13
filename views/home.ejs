@@ -152,11 +152,11 @@
                     })
                 });
 
-                const data = await response.json();
-
                 if (!response.ok) {
-                    throw new Error(data.error || 'Something went wrong');
+                    throw new Error(await response.text());
                 }
+
+                const data = await response.json();
 
                 // Update UI with result
                 document.getElementById('shortUrl').value = data.shortUrl;
@@ -165,18 +165,12 @@
                     data.originalUrl.length > 50 
                         ? data.originalUrl.substring(0, 50) + '...' 
                         : data.originalUrl;
-                document.getElementById('visitCount').textContent = data.visits;
+                document.getElementById('visitCount').textContent = data.visits || 0;
                 resultCard.style.display = 'block';
 
-                // Set up periodic visit count updates
-                const shortId = data.shortId;
-                setInterval(() => updateVisitCount(shortId), 5000); // Update every 5 seconds
-
-                // After successful URL creation, reload the URL table
-                loadUrls();
-
             } catch (error) {
-                errorMessage.textContent = error.message;
+                console.error('Error:', error);
+                errorMessage.textContent = error.message || 'An error occurred';
                 errorMessage.style.display = 'block';
             } finally {
                 // Reset button state

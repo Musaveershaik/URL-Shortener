@@ -8,16 +8,9 @@ function generateShortId() {
     return crypto.randomBytes(4).toString('hex');
 }
 
-// GET route for the home page
-router.get('/', (req, res) => {
-    res.render('home');
-});
-
-// POST route for handling URL shortening
+// POST route for shortening URLs
 router.post('/api/shorten', async (req, res) => {
     try {
-        console.log('Received request body:', req.body); // Debug log
-
         if (!req.body || !req.body.originalUrl) {
             return res.status(400).json({ error: 'URL is required' });
         }
@@ -31,9 +24,8 @@ router.post('/api/shorten', async (req, res) => {
             return res.status(400).json({ error: 'Invalid URL format' });
         }
 
-        // Check if URL already exists in database
+        // Check if URL already exists
         let url = await Url.findOne({ originalUrl });
-        console.log('Existing URL found:', url); // Debug log
         
         if (url) {
             return res.json({
@@ -49,12 +41,11 @@ router.post('/api/shorten', async (req, res) => {
         const shortId = generateShortId();
         url = new Url({
             originalUrl,
-            shortId
+            shortId,
+            visits: 0
         });
 
-        console.log('Saving new URL:', url); // Debug log
         await url.save();
-        console.log('URL saved successfully'); // Debug log
 
         res.json({
             success: true,
@@ -65,59 +56,48 @@ router.post('/api/shorten', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error in /api/shorten:', error);
-        res.status(500).json({ error: 'Server error', details: error.message });
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Server error' });
     }
 });
 
-// Redirect route for short URLs
-router.get('/:shortId', async (req, res) => {
+// GET route for URL stats
+router.get('/api/urls', async (req, res) => {
     try {
-        console.log('Accessing shortId:', req.params.shortId);
-        
-        const url = await Url.findOneAndUpdate(
-            { shortId: req.params.shortId },
-            { $inc: { visits: 1 } },  // Increment visits by 1
-            { new: true }
-        );
-        
-        console.log('Found URL:', url);
-        
-        if (!url) {
-            return res.status(404).json({ error: 'URL not found' });
-        }
-
-        console.log('Redirecting to:', url.originalUrl);
-        res.redirect(url.originalUrl);
+        const urls = await Url.find().sort({ createdAt: -1 });
+        res.json(urls);
     } catch (error) {
-        console.error('Error in redirect:', error);
-        res.status(500).json({ error: 'Server error', details: error.message });
+        res.status(500).json({ error: 'Server error' });
     }
 });
 
-// Add a new route to get URL stats
+// GET route for specific URL stats
 router.get('/api/stats/:shortId', async (req, res) => {
     try {
         const url = await Url.findOne({ shortId: req.params.shortId });
         if (!url) {
             return res.status(404).json({ error: 'URL not found' });
         }
-        res.json({
-            originalUrl: url.originalUrl,
-            shortId: url.shortId,
-            visits: url.visits,
-            createdAt: url.createdAt
-        });
+        res.json(url);
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
 });
 
-// Add this new route to get all URLs
-router.get('/api/urls', async (req, res) => {
+// Redirect route
+router.get('/:shortId', async (req, res) => {
     try {
-        const urls = await Url.find().sort({ createdAt: -1 }); // Get latest first
-        res.json(urls);
+        const url = await Url.findOneAndUpdate(
+            { shortId: req.params.shortId },
+            { $inc: { visits: 1 } },
+            { new: true }
+        );
+        
+        if (!url) {
+            return res.status(404).json({ error: 'URL not found' });
+        }
+
+        res.redirect(url.originalUrl);
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
